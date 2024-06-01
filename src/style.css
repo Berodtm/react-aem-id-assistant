@@ -1,0 +1,467 @@
+/* General Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(to right, #00863B 60%, #00863B 60%, #BCCF00 100%);
+  font-family: "Poppins", Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin: 7px;
+}
+
+.description {
+  font-size: 0.8em;
+  text-align: center;
+  padding: 30px;
+}
+
+#live-check-results {
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fff;
+  max-width: 1200px;
+  margin: 50px auto;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.output {
+  margin-top: 20px;
+}
+
+h1 {
+  color: #282828;
+  font-size: 24px;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+  margin: 30px 0 0 0;
+}
+
+.aem-button {
+  position: absolute;
+  top: 70px;
+  right: 30px;
+  transform: translateY(-50%);
+  width: 100px;
+  height: 100px;
+  background-color: #282828;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  overflow: hidden;
+  z-index: 1;
+  white-space: normal;
+  line-height: 1.2;
+  font-family: "Poppins", Arial, sans-serif;
+}
+
+.aem-button span {
+  display: inline-block;
+  white-space: normal;
+  line-height: 1.2;
+}
+
+.aem-button:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #62B34F;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  z-index: -1;
+}
+
+.aem-button:hover:before,
+#copyLink::before {
+  opacity: 1;
+}
+
+#copyLink,
+a {
+  color: #282828;
+}
+
+.aem-button:hover span {
+  color: #282828;
+}
+
+dialog {
+  font-family: "Poppins", Arial, sans-serif;
+  margin: auto;
+  border: none;
+  border-radius: 10px;
+}
+
+.form-container {
+  background-color: white;
+  width: 95%;
+  max-width: 1200px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.live-check-container {
+  display: none;
+}
+
+.more-options {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  color: white;
+  justify-content: center;
+  text-shadow: 1px 1px 2px #282828;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  width: 200px;
+  font-weight: bold;
+  font-size: smaller;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+#aemIdSubInput {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+#aemIdSubInput:focus,
+select:focus {
+  outline: none;
+  border-color: #00863B;
+  box-shadow: 0 0 5px #BCCF00;
+}
+
+select:hover,
+#aemIdSubInput:hover,
+input[type="text"]:hover,
+input[type="number"]:hover {
+  border: solid 1px;
+}
+
+/* Input container for Copy ID button */
+.input-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  gap: 10px; /* Adding gap between input and button */
+  align-items: flex-start
+}
+
+/* Copy ID button styling */
+.input-container button {
+  width: 150px; /* Set a fixed width for the button */
+  padding: 10px 20px;
+  background-color: #00863B;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#copyLink:visited,
+#copyLink:after {
+  color: #282828;
+}
+
+#copyLink:hover,
+a:hover {
+  color: #00863B;
+}
+
+#copyLink:active {
+  color: #282828;
+}
+
+textarea {
+  height: 200px;
+  width: 99%;
+  margin-top: 20px;
+  resize: vertical;
+  overflow: auto;
+  font-style: Arial;
+  font-size: 14px;
+  background-color: whitesmoke;
+  border: solid 1px #00863B;
+  border-radius: 9px;
+  padding: 5px;
+}
+
+.input-form {
+  width: 100%;
+  padding: 10px;
+}
+
+/* General input styling */
+.input-form input[type="text"],
+.input-form input[type="number"],
+.input-form select,
+.input-form #aemIdSubInput {
+  width: 100%; /* 100% width */
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* General input styling for the second input */
+.input-container input[type="text"] {
+  flex-grow: 1; /* Allow the input to grow and take up remaining space */
+  margin-bottom: 0; /* Remove bottom margin for alignment */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Button container */
+.button-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.dialog-buttons button {
+  margin: 5px;
+  flex-grow: 1;
+  padding: 10px 20px;
+  background-color: #00863B;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  height: 50px;
+  font-weight: bold;
+}
+/* Submit button styling */
+.button-container button {
+  margin: 0; /* Remove any margin */
+  width: 100%;  /* 100% width */
+  padding: 10px 20px;
+  background-color: #00863B;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.aemTrainingBox {
+  position: fixed;
+  background-color: #fff;
+  font-family: "Poppins", Arial, sans-serif;
+  z-index: 100;
+  margin: auto 25px;
+}
+
+.footer {
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  text-align: center;
+  padding: 40px;
+  color: white;
+  height: 40px;
+}
+
+button:hover {
+  background-color: hsl(144, 100%, 20%);
+}
+
+.logo {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 100px;
+  border: solid 1px black;
+}
+
+.aemTrainingBox ol li::marker {
+  font-weight: bold;
+}
+
+.snowflake {
+  position: fixed;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.snowflake {
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+#brand-checkboxes,
+#asset-type-checkboxes,
+#device-type {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  flex-basis: calc(25% - 20px);
+  border: 2px solid transparent;
+  padding: 3px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.checkbox-group:hover {
+  outline: 1px solid hsl(144, 100%, 20%);
+  padding: 3px;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.checkbox-group label {
+  margin: 0;
+  font-weight: normal;
+  white-space: nowrap;
+  margin-left: 5px;
+  display: block;
+}
+
+.checkbox-group input[type="checkbox"] {
+  vertical-align: middle;
+  margin-right: 5px;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: #ddd;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#whats-new,
+#dev-notes,
+.lead-form,
+#activity-name-builder-form-container {
+  display: none;
+}
+
+@keyframes jiggle {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.jiggle {
+  animation: jiggle 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) 2;
+  animation-delay: 1s infinite;
+}
+
+#activity-name-builder-form-input {
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+fieldset {
+  padding: 20px;
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-radius: 5px;
+  border: 1px solid #606060;
+  box-shadow: 0px 0px 6px 1px #282828;
+  opacity: 0.9;
+}
+
+#activity-name-builder-form-container fieldset label {
+  display: inline-block;
+  width: auto;
+  font-weight: 500;
+}
+
+#activity-name-builder-productType,
+#activity-name-builder-lead {
+  width: 350px;
+  display: block;
+}
+
+legend {
+  font-weight: bold;
+  border-radius: 5px;
+  box-shadow: 0px 0px 6px 1px #282828;
+  padding: 5px 10px;
+  background-color: #fff;
+  width: 250px;
+}
+
+#activity-name-builder-deviceType {
+  display: flex;
+  flex-direction: column;
+}
+
+#activity-name-builder-deviceType div {
+  display: flex;
+  align-items: flex-start;
+}
+
+#activity-name-builder-deviceType input[type="checkbox"] {
+  margin-right: 5px;
+}
