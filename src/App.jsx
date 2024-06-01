@@ -145,7 +145,7 @@ const App = () => {
         }
       } catch (error) {
         logError(error, 'Fetch error');
-        resultsContainer.innerHTML += `<div>${id} - <span style="color: red;">Fetch error - This only works in chrome. </span></div>`;
+        resultsContainer.innerHTML += `<div>${id} - <span style="color: red;"><strong>Fetch API error - Follow instructions above.</strong></span></div>`;
       }
     }
   };
