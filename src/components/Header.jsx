@@ -2,8 +2,8 @@ import React from 'react';
 
 const Header = () => (
   <div className='container'>
-    <h1>AEM ID Assistant</h1>
-    <p className='description'>
+    <h1>AEM ID Assistant - Rebuilt in React.js!</h1>
+    <p className='description'>Automated AEM folder navigation, id validation and automated QA checks via the AEM API. <br /> <br />
       <strong>ID to Test: </strong>
       core-leads/hal-retail/lins/app/asm/s/tn/rn/cnv/halappasm-test-lead-tile-0224gener1
       <br />
