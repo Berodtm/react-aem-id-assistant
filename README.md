@@ -23,25 +23,25 @@ npm install --save-dev gh-pages
 
 ### Add the homepage field at the top:
 
-json
+```json
 
 "homepage": "https://Berodtm.github.io/react-aem-id-assistant/",
-
+```
 ### Update the scripts section:
 
-json
+```json
 
 "scripts": {
   "predeploy": "npm run build",
   "deploy": "gh-pages -d dist"
 }
-
+```
 ### Open vite.config.js and add the following at the top (above plugins):
 
-js
+```js
 
 base: "/react-aem-id-assistant/",
-
+```
 ### Run the following Git commands:
 
 ```sh
