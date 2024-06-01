@@ -17,7 +17,7 @@ p {
 .description {
   font-size: 0.8em;
   text-align: center;
-  padding: 30px;
+  padding: 10px;
 }
 
 #live-check-results {
@@ -30,9 +30,9 @@ p {
   align-items: center;
   background-color: #fff;
   max-width: 1200px;
-  margin: 50px auto;
+  margin: 10px auto;
   border-radius: 5px;
-  padding: 20px;
+  padding: 10px;
 }
 
 .output {
@@ -45,7 +45,7 @@ h1 {
   text-align: center;
   padding: 10px;
   font-weight: bold;
-  margin: 30px 0 0 0;
+  margin: 10px 0 0 0;
 }
 
 .aem-button {
