@@ -1,3 +1,30 @@
+# AEM ID Assistant (Rebuilt in React)
+## Overview
+The AEM ID Assistant is a React-based tool designed for managing Adobe Experience Manager (AEM) assets. It simplifies the process of identifying and constructing URLs based on AEM IDs, ensuring correct device and brand type detection, and facilitating quick access to AEM resources.
+- **React.js**: JavaScript library for building user interfaces.
+- **Vite**: Next-generation frontend tooling for fast builds and hot module replacement.
+- **JavaScript**: Programming language used for the logic.
+- **JSX**: Syntax extension for JavaScript, used in React to describe what the UI should look like.
+- **HTML**: Markup language for structuring the web content.
+- **CSS**: Styling language for designing the user interface.
+- **npm (Node Package Manager)**: Tool for managing project dependencies.
+- **GitHub Pages**: Hosting service for the live demo.
+- **AEM API**: Adobe Experience Manager API for interacting with AEM assets.
+## Features
+- **Device Type Detection**: Identifies the device type (e.g., App, Desktop, Mobile Browser) from AEM IDs.
+- **Brand Type Detection**: Determines brand type from AEM IDs.
+- **Asset Type Validation**: Validates asset types against a predefined list.
+- **URL Construction**: Generates specific URLs for different AEM asset types.
+- **Error Handling**: Provides visual feedback and error messages for mismatches and issues.
+## Usage
+Access the tool through the following link to manage your AEM assets effectively:
+[Live Demo of AEM Asset Manager](https://berodtm.github.io/react-aem-id-assistant/)
+## How to Use
+1. **Enter AEM ID**: Input the AEM ID into the designated field.
+2. **Process Information**: Click the 'Submit' button to process the AEM ID.
+3. **Review Output**: The tool displays device type, brand, asset type, and relevant URLs.
+4. **Error Feedback**: Displays error messages for any detected mismatches or issues.
+
 ## Navigate to your project directory:
 
 ```sh
@@ -75,4 +102,3 @@ To check the preview server, enter the command:
 
 npm run dev
 ```
-Just copy the above content and paste it into a new file named README.md in your project directory.
