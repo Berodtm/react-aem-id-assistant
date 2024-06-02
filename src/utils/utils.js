@@ -1,3 +1,5 @@
+// utils.js
+
 const productCodes = ['lins', 'invs'];
 const appBuildBaseFolder = 'https://author-lloydsbg-production.adobecqms.net/assets.html/content/dam/';
 const appDeployBaseUrl = 'https://author-lloydsbg-production.adobecqms.net/aem/experience-fragments.html/content/experience-fragments/';
@@ -58,26 +60,42 @@ export function getBrand(aemID) {
 }
 
 export function getAssetType(aemID, assetTypeArray) {
-  const parts = aemID.split('/');
+  // Initialize variables to hold the final asset type and the count of asset types found
   let assetType = '';
-  let counter = 0;
+  let assetTypeCount = 0;
 
-  parts.forEach((part) => {
-    if (!productCodes.includes(part)) {
-      if (assetTypeArray.includes(part)) {
-        assetType = part;
-        counter++;
-      }
+  // Use a regular expression to match any asset types in the string 'aemID'
+  // The regular expression is created by joining all elements in 'assetTypeArray' with '|', 
+  // which means "or" in regex, and adding the 'g' flag for global search
+  const regex = new RegExp(assetTypeArray.join('|'), 'g');
+  // Apply the regular expression to the 'aemID' string to find all matches
+  const matches = aemID.match(regex);
+
+  // Check if any matches were found
+  if (matches) {
+    // Count the number of matches found
+    assetTypeCount = matches.length;
+    // Create a Set from the matches to get unique asset types
+    const uniqueAssetTypes = new Set(matches);
+
+    // If more than one unique asset type is found, indicate a mismatch error
+    if (uniqueAssetTypes.size > 1) {
+      assetType = 'Error - Asset type mismatch';
+    // If exactly one unique asset type is found, set 'assetType' to that type
+    } else if (uniqueAssetTypes.size === 1) {
+      assetType = [...uniqueAssetTypes][0]; // Convert the Set to an array and get the first element
     }
-  });
-
-  if (counter > 1) {
-    assetType = 'Error - Asset type mismatch';
-  } else if (counter === 0) {
+  } else {
+    // If no matches are found, indicate no valid asset type found
     assetType = 'Error - No valid asset type found';
   }
+
+  // Log the number of asset types found and the final asset type
+  console.log(`Asset types found: ${assetTypeCount}, Asset type: ${assetType}`);
+  // Return the final asset type
   return assetType;
 }
+
 
 export function getAemUrls(aemID, appBaseUrl, deviceType, deviceTypeStatus) {
   const index = aemID.indexOf('core-leads');

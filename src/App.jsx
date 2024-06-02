@@ -6,6 +6,7 @@ import Output from './components/Output';
 import Results from './components/Results';
 import { resetPage, handleSubmit, copySubID } from './utils/handlers';
 import { logState, logError, logMessage } from './debug';
+import { assetTypeArray } from './constants';  // Import assetTypeArray here
 
 const App = () => {
   const [aemID, setAemID] = useState('');
@@ -103,7 +104,7 @@ const App = () => {
     }
 
     try {
-      handleSubmit(aemID, setStates);
+      handleSubmit(aemID, setStates, assetTypeArray);  // Pass assetTypeArray here
     } catch (error) {
       logError(error, 'Error during handleSubmit');
       setError('An error occurred');
