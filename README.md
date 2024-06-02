@@ -1,6 +1,7 @@
 # AEM ID Assistant (Rebuilt in React)
 ## Overview
 The AEM ID Assistant is a React-based tool designed for managing Adobe Experience Manager (AEM) assets. It simplifies the process of identifying and constructing URLs based on AEM IDs, ensuring correct device and brand type detection, and facilitating quick access to AEM resources.
+## Technology Used
 - **React.js**: JavaScript library for building user interfaces.
 - **Vite**: Next-generation frontend tooling for fast builds and hot module replacement.
 - **JavaScript**: Programming language used for the logic.
