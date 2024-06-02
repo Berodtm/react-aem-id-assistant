@@ -60,6 +60,7 @@ export function getBrand(aemID) {
 }
 
 export function getAssetType(aemID, assetTypeArray) {
+
   // Initialize variables to hold the final asset type and the count of asset types found
   let assetType = '';
   let assetTypeCount = 0;

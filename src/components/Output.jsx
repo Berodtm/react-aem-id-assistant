@@ -11,10 +11,34 @@ const Output = ({
   error,
 }) => (
   <div className='output form-container'>
-    {error && <p id='error' style={{ color: 'red' }}>{error}</p>}
-    <p id='assetType'>{assetType || ''}</p>
-    <p id='deviceType'>{deviceType || ''}</p>
-    <p id='brandType'>{brandType || ''}</p>
+    {error && <p id='error' style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>}
+    <p
+      id='assetType'
+      style={{
+        color: assetType && assetType.includes('ERROR') ? 'red' : 'inherit',
+        fontWeight: assetType && assetType.includes('ERROR') ? 'bold' : 'inherit',
+      }}
+    >
+      {assetType || ''}
+    </p>
+    <p
+      id='deviceType'
+      style={{
+        color: deviceType && deviceType.includes('ERROR') ? 'red' : 'inherit',
+        fontWeight: deviceType && deviceType.includes('ERROR') ? 'bold' : 'inherit',
+      }}
+    >
+      {deviceType || ''}
+    </p>
+    <p
+      id='brandType'
+      style={{
+        color: brandType && brandType.includes('ERROR') ? 'red' : 'inherit',
+        fontWeight: brandType && brandType.includes('ERROR') ? 'bold' : 'inherit',
+      }}
+    >
+      {brandType || ''}
+    </p>
     <p id='appBuildUrl'>
       {appBuildUrl && (
         <>

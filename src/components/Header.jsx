@@ -5,7 +5,7 @@ const Header = () => (
     <h1>AEM ID Assistant - Rebuilt in React.js!</h1>
     <p className='description'>Automated AEM folder navigation, id validation and automated QA checks via the AEM API. <br /> <br />
       <strong>ID to Test: </strong>
-      core-leads/hal-retail/lins/app/asm/s/tn/rn/cnv/halappasm-test-lead-tile-0224gener1
+      core-leads/hal-retail/lins/app/asm/s/tn/rn/cnv/halappasm-test-lead-0224gener1
       <br />
       <strong>API test ID: </strong>
       core-leads/lly-retail/card/app/asm/s/tn/rn/cnv/llyappasm-card-contextual-22droploo1
