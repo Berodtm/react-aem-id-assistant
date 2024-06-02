@@ -1,13 +1,12 @@
-// src/utils/api.js
 import { logState, logError, logMessage } from '../debug';
 import { getDeviceType } from './utils';
-import { appBaseUrl, existingAppAssetBaseUrl } from '../constants'; // Import the constants
+import { appBaseUrl, existingAppAssetBaseUrl } from '../constants';
 
-export const IdApiCheck = async (aemID, setAppBuildUrl, setAppDeployUrl, setAppBuildFolderUrl, setDkpMbrBuildUrl, additionalLiveChecks, setError) => {
+export const IdApiCheck = async (aemID, setAppBuildUrl, setAppDeployUrl, setAppBuildFolderUrl, setDkpMbrBuildUrl, additionalLiveChecks, setError, setLiveCheckResults) => {
   logMessage('ID API Check initiated');
   const ids = aemID.split('\n');
-  const resultsContainer = document.getElementById('live-check-results');
-  resultsContainer.innerHTML = '';
+  let resultsHTML = '';
+
   for (let id of ids) {
     if (id.trim() === '') continue;
     let { deviceType, deviceTypeStatus } = getDeviceType(id);
@@ -24,7 +23,7 @@ export const IdApiCheck = async (aemID, setAppBuildUrl, setAppDeployUrl, setAppB
         response.ok &&
         (deviceType === 'dkp' || deviceType === 'mbr' || deviceType === 'cwa')
       ) {
-        resultsContainer.innerHTML += `<div>${id} - <strong><span style="color: red;">ID already published</span></strong><br><a target="_blank" href="https://author-lloydsbg-production.adobecqms.net/editor.html/content/experience-fragments/${id}/master.html">Link to Existing XF Asset in AEM</a><br><a target="_blank" href="${url}">Link to Existing Asset for Non AEM Users</a></div><br>`;
+        resultsHTML += `<div>${id} - <strong><span style="color: red;">ID already published</span></strong><br><a target="_blank" href="https://author-lloydsbg-production.adobecqms.net/editor.html/content/experience-fragments/${id}/master.html">Link to Existing XF Asset in AEM</a><br><a target="_blank" href="${url}">Link to Existing Asset for Non AEM Users</a></div><br>`;
         setAppBuildUrl('');
       } else {
         url = `https://content.lloydsbankinggroup.com/api/assets/${id}.json`;
@@ -33,18 +32,21 @@ export const IdApiCheck = async (aemID, setAppBuildUrl, setAppDeployUrl, setAppB
           let data = await appResponse.json();
           logState(data, 'API Response Data');
 
-          resultsContainer.innerHTML += `<div>${id} - <strong><span style="color: red;">ID already published</span></strong><br><a target="_blank" href="${existingAppAssetBaseUrl}${id}">Link to Existing App Asset in AEM</a></div><br>`;
+          resultsHTML += `<div>${id} - <strong><span style="color: red;">ID already published</span></strong><br><a target="_blank" href="${existingAppAssetBaseUrl}${id}">Link to Existing App Asset in AEM</a></div><br>`;
           setAppBuildUrl('');
-          await additionalLiveChecks(data);
+          const additionalResults = await additionalLiveChecks(data);
+          resultsHTML += additionalResults;
         } else {
-          resultsContainer.innerHTML += `<div>${id} - <strong><span style="color: green;">ID not published</span></strong></div><br>`;
+          resultsHTML += `<div>${id} - <strong><span style="color: green;">ID not published</span></strong></div><br>`;
         }
       }
     } catch (error) {
       logError(error, 'Fetch error');
-      resultsContainer.innerHTML += `<div>${id} - <span style="color: red;"><strong>Fetch API error - Follow instructions above.</strong></span></div>`;
+      resultsHTML += `<div>${id} - <span style="color: red;"><strong>Fetch API error - Follow instructions above.</strong></span></div>`;
     }
   }
+  logMessage(`Setting liveCheckResults: ${resultsHTML}`);
+  setLiveCheckResults(resultsHTML);
 };
 
 export const additionalLiveChecks = async (data) => {
@@ -57,75 +59,47 @@ export const additionalLiveChecks = async (data) => {
     const style = data?.properties?.elements?.style || null;
     const imageUrl = data?.properties?.elements?.imageUrl || null;
 
-    const resultsContainer = document.getElementById('live-check-results');
-
-    const h3 = document.createElement('h3');
-    h3.textContent = 'Supporting Live Checks';
-    resultsContainer.appendChild(h3);
+    let resultsHTML = '<h3>Supporting Live Checks</h3>';
 
     if (ctaPrimaryText?.value) {
       logMessage('CTA Text found');
-      const ctaText = document.createElement('p');
-      ctaText.innerHTML = `<strong>CTA text:</strong> ${ctaPrimaryText.value}`;
-      resultsContainer.appendChild(ctaText);
+      resultsHTML += `<p><strong>CTA text:</strong> ${ctaPrimaryText.value}</p>`;
     }
 
     if (ctaPrimaryLink?.value) {
       logMessage('CTA URL found');
-      const ctaURL = document.createElement('p');
-      ctaURL.innerHTML = `<strong>CTA url:</strong> ${ctaPrimaryLink.value}`;
-      resultsContainer.appendChild(ctaURL);
+      resultsHTML += `<p><strong>CTA url:</strong> ${ctaPrimaryLink.value}</p>`;
     }
 
     if (ctaPrimaryStyle?.value) {
-      const ctaStyle = document.createElement('p');
-      ctaStyle.innerHTML = `<strong>CTA Style:</strong> ${ctaPrimaryStyle.value}`;
-      resultsContainer.appendChild(ctaStyle);
+      resultsHTML += `<p><strong>CTA Style:</strong> ${ctaPrimaryStyle.value}</p>`;
     }
 
     if (titleText?.value) {
-      const header = document.createElement('p');
-      header.innerHTML = `<strong>Header Text:</strong> ${titleText.value}`;
-      resultsContainer.appendChild(header);
+      resultsHTML += `<p><strong>Header Text:</strong> ${titleText.value}</p>`;
     }
 
     if (bodyText?.value) {
-      const bodyCopy = document.createElement('p');
-      bodyCopy.innerHTML = `<strong>Body Text:</strong> ${bodyText.value}`;
-      resultsContainer.appendChild(bodyCopy);
+      resultsHTML += `<p><strong>Body Text:</strong> ${bodyText.value}</p>`;
     }
 
     if (style?.value) {
-      const backgroundStyle = document.createElement('p');
-      backgroundStyle.innerHTML = `<strong>BackGround Style:</strong> ${style.value}`;
-      resultsContainer.appendChild(backgroundStyle);
+      resultsHTML += `<p><strong>BackGround Style:</strong> ${style.value}</p>`;
     }
 
     if (imageUrl?.value) {
-      const image = document.createElement('p');
-      image.innerHTML = `<strong>Image Url:</strong> ${imageUrl.value}`;
-      resultsContainer.appendChild(image);
+      resultsHTML += `<p><strong>Image Url:</strong> ${imageUrl.value}</p>`;
     }
 
-    const p = document.createElement('p');
-    resultsContainer.appendChild(p);
+    const errorMsg = ctaPrimaryLink?.value?.includes(' ') 
+      ? `Common Error Spotted: Spaces in URL: ${ctaPrimaryLink.value}` 
+      : `Common Error Check - Pass - URL contains no spaces: ${ctaPrimaryLink.value}`;
+    resultsHTML += `<p>${errorMsg}</p>`;
 
-    if (ctaPrimaryLink?.value) {
-      const pSpaceCheck = document.createElement('p');
-
-      if (ctaPrimaryLink.value.includes(' ')) {
-        logMessage('Failed QA: Spaces in URL');
-        pSpaceCheck.textContent =
-          'Common Error Spotted: Spaces in URL: ' + ctaPrimaryLink.value;
-      } else {
-        logMessage('URL contains no spaces');
-        pSpaceCheck.textContent =
-          'Common Error Check - Pass - URL contains no spaces: ';
-      }
-
-      resultsContainer.appendChild(pSpaceCheck);
-    }
+    logMessage(`additionalLiveChecks results: ${resultsHTML}`);
+    return resultsHTML;
   } catch (error) {
     logError(error, 'Error in additionalLiveChecks');
+    return '';
   }
 };

@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './style.css';
-import { logState, logError, logMessage } from './debug';
 import Header from './components/Header';
 import InputForm from './components/InputForm';
 import Output from './components/Output';
 import Results from './components/Results';
-import { getDeviceType, getBrand, getAssetType, getAemUrls } from './utils/utils';
-import { handleLiveCheck } from './utils/liveCheck';
-import { IdApiCheck, additionalLiveChecks } from './utils/api';
-import { appBaseUrl, appDeployBaseUrl, appBuildBaseFolder, existingAppAssetBaseUrl, dkpMbrBuildUrlBaseUrl, assetTypeArray } from './constants';
+import { resetPage, handleSubmit, copySubID } from './utils/handlers';
+import { logState, logError, logMessage } from './debug';
 
 const App = () => {
   const [aemID, setAemID] = useState('');
@@ -24,80 +21,92 @@ const App = () => {
   const [aemIdSubInput, setAemIdSubInput] = useState('');
   const [inputContainerHidden, setInputContainerHidden] = useState(true);
 
-  const resetPage = () => {
-    setAssetType('');
-    setDeviceType('');
-    setBrandType('');
-    setAppBuildUrl('');
-    setAppBuildFolderUrl('');
-    setAppDeployUrl('');
-    setDkpMbrBuildUrl('');
-    setError('');
-    setInputContainerHidden(true);
-    logMessage('Page reset');
+  const hasMounted = useRef(false);
+
+  useEffect(() => {
+    if (hasMounted.current) {
+      logMessage(`assetType: ${assetType}`);
+    } else {
+      hasMounted.current = true;
+    }
+  }, [assetType]);
+
+  useEffect(() => {
+    if (hasMounted.current) {
+      logMessage(`deviceType: ${deviceType}`);
+    }
+  }, [deviceType]);
+
+  useEffect(() => {
+    if (hasMounted.current) {
+      logMessage(`brandType: ${brandType}`);
+    }
+  }, [brandType]);
+
+  useEffect(() => {
+    if (hasMounted.current) {
+      logMessage(`appBuildUrl: ${appBuildUrl}`);
+    }
+  }, [appBuildUrl]);
+
+  useEffect(() => {
+    if (hasMounted.current) {
+      logMessage(`appBuildFolderUrl: ${appBuildFolderUrl}`);
+    }
+  }, [appBuildFolderUrl]);
+
+  useEffect(() => {
+    if (hasMounted.current) {
+      logMessage(`appDeployUrl: ${appDeployUrl}`);
+    }
+  }, [appDeployUrl]);
+
+  useEffect(() => {
+    if (hasMounted.current) {
+      logMessage(`dkpMbrBuildUrl: ${dkpMbrBuildUrl}`);
+    }
+  }, [dkpMbrBuildUrl]);
+
+  useEffect(() => {
+    if (hasMounted.current) {
+      logMessage(`error: ${error}`);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (hasMounted.current) {
+      logMessage(`liveCheckResults: ${liveCheckResults}`);
+    }
+  }, [liveCheckResults]);
+
+  const setStates = {
+    setAssetType,
+    setDeviceType,
+    setBrandType,
+    setAppBuildUrl,
+    setAppBuildFolderUrl,
+    setAppDeployUrl,
+    setDkpMbrBuildUrl,
+    setError,
+    setAemIdSubInput,
+    setInputContainerHidden,
+    setLiveCheckResults,
   };
 
-  const handleSubmit = () => {
+  const handleFormSubmit = () => {
     logMessage('Submit button clicked');
-    resetPage();
+    resetPage(setStates);
+
+    if (aemID.includes(' ')) {
+      setError('Error - AEM ID Contains Spaces');
+      return;
+    }
+
     try {
-      const { deviceType, deviceTypeStatus } = getDeviceType(aemID);
-      logState({ deviceType, deviceTypeStatus }, 'Device Type');
-      const assetType = getAssetType(aemID, assetTypeArray);
-      logState({ assetType }, 'Asset Type');
-      const aemUrls = getAemUrls(aemID, appBaseUrl, deviceType, deviceTypeStatus);
-      logState({ aemUrls }, 'AEM URLs');
-      const brand = getBrand(aemID);
-      logState({ brand }, 'Brand Type');
-
-      setAssetType(`Asset Type: ${assetType.toUpperCase()}`);
-      setDeviceType(`Device Type: ${deviceType.toUpperCase()}`);
-      setBrandType(`Brand: ${brand.toUpperCase()}`);
-
-      const lastIndex = aemID.lastIndexOf('/');
-      if (lastIndex !== -1) {
-        setAemIdSubInput(aemID.substring(lastIndex + 1));
-        setInputContainerHidden(false);
-      }
-
-      if (aemID.includes(' ')) {
-        setError('Error - AEM ID Contains Spaces');
-      }
-
-      if (
-        deviceType === 'app' &&
-        brandType !== 'Error - Brand type mismatch' &&
-        assetType !== 'Error - Asset type mismatch' &&
-        !aemID.includes(' ')
-      ) {
-        setAppBuildUrl(`AEM APP Direct CF Build Link: ${aemUrls.appBuildUrl}`);
-        setAppDeployUrl(`AEM App Deployment Folder Link: ${aemUrls.appDeployUrl}`);
-        setAppBuildFolderUrl(`AEM App Build Folder Link: ${aemUrls.appBuildFolderUrl}`);
-      } else if (
-        (deviceType === 'dkp' || deviceType === 'mbr' || deviceType === 'cwa') &&
-        brandType !== 'Error - Brand type mismatch' &&
-        assetType !== 'Error - Asset type mismatch' &&
-        !aemID.includes(' ')
-      ) {
-        setDkpMbrBuildUrl(`Desktop, CWA and Mobile Browser direct build AEM link: ${aemUrls.dkpMbrBuildUrl}`);
-        setAppBuildFolderUrl(`Desktop, CWA and Mobile Browser AEM folder link: ${aemUrls.dkpMbrBuildUrlFolder}`);
-      } else {
-        setError('Check AEM ID');
-      }
-
-      // Trigger API check
-      IdApiCheck(aemID, setAppBuildUrl, setAppDeployUrl, setAppBuildFolderUrl, setDkpMbrBuildUrl, additionalLiveChecks, setError);
+      handleSubmit(aemID, setStates);
     } catch (error) {
       logError(error, 'Error during handleSubmit');
       setError('An error occurred');
-    }
-  };
-
-  const copySubID = () => {
-    if (aemIdSubInput) {
-      navigator.clipboard.writeText(aemIdSubInput).then(() => {
-        console.log('ID copied to clipboard');
-      });
     }
   };
 
@@ -107,9 +116,9 @@ const App = () => {
       <InputForm
         aemID={aemID}
         setAemID={setAemID}
-        handleSubmit={handleSubmit}
+        handleSubmit={handleFormSubmit}
         aemIdSubInput={aemIdSubInput}
-        copySubID={copySubID}
+        copySubID={() => copySubID(aemIdSubInput)}
         inputContainerHidden={inputContainerHidden}
       />
       <Output
